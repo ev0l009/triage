@@ -3,3 +3,6 @@ class TriageError(Exception):
 
 class InvalidAttributeError(TriageError):
     pass
+
+class DataBaseError(TriageError):
+    pass

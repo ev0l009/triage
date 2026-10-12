@@ -1,4 +1,5 @@
-from typing import Self
+import json
+from pathlib import Path
 
 from services.types import TicketDictType
 
@@ -11,6 +12,11 @@ from utils.validators import get_category
 from utils.validators import get_urgency
 
 from utils.helpers import generate_id
+
+from services.exceptions import DataBaseError
+
+DATA_DIR = Path(__file__).resolve().parent.parent/'data'
+FILE_PATH = DATA_DIR/"tickets.json"
 
 class Triage:
     def __init__(self):
@@ -28,28 +34,28 @@ class Triage:
         validate_cases(cases)
         validated_category = get_category(category)
         validated_urgency = get_urgency(urgency)
-
+        validated_cases = validate_cases(cases)
         ticket_id = generate_id()
 
         while ticket_id in self.tickets:
             print("Generating unique ticket ID...")
             ticket_id = generate_id()
 
-        priority = self.set_priority(cases, validated_urgency)
+        priority = self.set_priority(validated_cases, validated_urgency)
 
         self.tickets[ticket_id] = {
             "id": ticket_id,
             "title": title,
             "category": validated_category,
             "urgency": validated_urgency,
-            "cases": cases,
+            "cases": validated_cases,
             "priority": priority,
             "assigned_staff": None
         }
         
         return ticket_id
     
-    def set_priority(cases: int, urgency: str) -> str:
+    def set_priority(self, cases: int, urgency: str) -> str:
         if urgency == Urgency.HIGH.value and cases >= 10:
             return Priority.CRITICAL.value
         elif urgency == Urgency.HIGH.value or cases >= 10:
@@ -58,3 +64,20 @@ class Triage:
             return Priority.MEDIUM.value
         else:
             return Priority.LOW.value
+        
+    def save(self):
+        DATA_DIR.mkdir(exist_ok=True, parents=True)
+        try:
+            with open(FILE_PATH, 'w') as file:
+                json.dump(self.tickets, file, indent=4)
+        except (FileNotFoundError, json.JSONDecodeError) as err:
+            raise DataBaseError(f"Session could not be saved: {err}")
+        
+    def load(self):
+        try:
+            with open(FILE_PATH, 'r') as file:
+                raw_data = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError) as err:
+            raise DataBaseError(f"Session could not be loaded: {err}")
+        else:
+            self.tickets = raw_data
