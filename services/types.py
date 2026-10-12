@@ -12,6 +12,12 @@ class Urgency(Enum):
     MEDIUM = "medium"
     HIGH = "high"
 
+class Priority(Enum):
+    CRITICAL = 'critical'
+    HIGH = 'high'
+    MEDIUM = 'medium'
+    LOW = 'low'
+
 class TicketDictType(TypedDict):
     id: str
     title: str
