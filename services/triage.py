@@ -3,8 +3,7 @@ from pathlib import Path
 
 from services.types import TicketDictType
 
-from services.types import Priority
-from services.types import Urgency
+from services.types import Priority, Urgency, TicketStatus
 
 from utils.validators import require_non_empty
 from utils.validators import validate_cases
@@ -18,7 +17,15 @@ from services.exceptions import DataBaseError, InvalidTicketIDError
 DATA_DIR = Path(__file__).resolve().parent.parent/'data'
 FILE_PATH = DATA_DIR/"tickets.json"
 
+PRIORITY_SORT_ORDER: dict[str, int] = {
+    Priority.CRITICAL.value: 1,
+    Priority.HIGH.value: 2,
+    Priority.MEDIUM.value: 3,
+    Priority.LOW.value: 4
+}
+
 class Triage:
+    
     def __init__(self):
         self.tickets: dict[str, TicketDictType] = {}
 
@@ -50,7 +57,8 @@ class Triage:
             "urgency": validated_urgency,
             "cases": validated_cases,
             "priority": priority,
-            "assigned_staff": None
+            "status": TicketStatus.OPEN.value,
+            "assigned_staff": ""
         }
         
         return ticket_id
@@ -76,7 +84,7 @@ class Triage:
 
         for idx, ticket in enumerate(self.tickets.values()):
             ticket_list_str += (
-                f"{idx+1}  {ticket["id"]}  {ticket['title']}\n"
+                f"{idx+1}  {ticket["id"]}  {ticket['title']} {ticket['status'].capitalize()}\n"
             )
         
         return ticket_list_str
@@ -88,6 +96,10 @@ class Triage:
             raise InvalidTicketIDError("No ticket with this ID exists.")
         
         ticket = self.tickets[ticket_id]
+
+        staff = ""
+        if not ticket["assigned_staff"].strip():
+            staff = "None"
         
         return (
             f"ID: {ticket['id']}\n"
@@ -96,11 +108,68 @@ class Triage:
             f"Urgency: {ticket['urgency'].capitalize()}\n"
             f"Priority: {ticket['priority'].capitalize()}\n"
             f"Cases: {ticket['cases']}\n"
-            f"Assigned staff: {ticket['assigned_staff']}"
+            f"Assigned staff: {staff}\n"
+            f"Status: {ticket['status']}"
         )
-    
-    
+
+    def assign_ticket(self, ticket_id: str, staff_name: str):
+        if ticket_id not in self.tickets:
+            raise InvalidTicketIDError("No ticket with this ID exists.")
         
+        require_non_empty(staff_name, "Staff Name")
+
+        ticket = self.tickets[ticket_id]
+
+        ticket["assigned_staff"] = staff_name
+        self.set_ticket_status(ticket)
+
+        return f"Ticket with ID {ticket_id} successfully assigned to {staff_name}."
+    
+    def set_tickets_status(self):
+        for ticket in self.tickets.values():
+            self.set_ticket_status(ticket)
+    
+    def set_ticket_status(self, ticket: TicketDictType):
+
+        if not ticket["assigned_staff"].strip():
+            ticket["status"] = TicketStatus.OPEN.value
+        elif ticket["assigned_staff"]:
+            ticket["status"] = TicketStatus.IN_PROGRESS.value
+        else:
+            ticket["status"] = TicketStatus.RESOLVED.value
+
+    def work_queue(self) -> str:
+
+        if not self.tickets:
+            return "There are no tickets available. Please create one."
+
+        ticket_list: list[TicketDictType] = list(self.tickets.values())
+
+        ticket_list.sort(key=lambda ticket: PRIORITY_SORT_ORDER.get(ticket["priority"], 99))
+
+        
+        sorted_ticket_list = (
+            "\n------ Work Queue ------\n"
+        )
+
+        for idx, ticket in enumerate(self.tickets.values()):
+            sorted_ticket_list += (
+                f"{idx+1}  {ticket["id"]}  {ticket['title']} {ticket['priority'].capitalize()}\n"
+            )
+
+        return sorted_ticket_list
+    
+    def report(self) -> str:
+        report = (
+            "\n------ Report ------\n"
+            "No of tickets: \n"
+            "No of open tickets: \n"
+            "No of assigned tickets: \n"
+            "No of resolved tickets: \n"
+        )
+        return report
+
+
     def save(self):
         DATA_DIR.mkdir(exist_ok=True, parents=True)
         try:

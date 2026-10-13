@@ -62,17 +62,30 @@ def triange_runner():
             opt = "0"
 
         elif opt == "4":
-            print("Assigning ticket...")
+            ticket_id = input("Enter a valid ticket ID: ")
+            staff_name = input("Enter staff name: ")
+
+            try:
+                message = triage.assign_ticket(
+                    ticket_id,
+                    staff_name
+                )
+            except InvalidTicketIDError as err:
+                print(err)
+            except InvalidAttributeError as err:
+                print(err)
+            else:
+                print(message)
 
             opt = "0"
 
         elif opt == "5":
-            print("Loading work queue...")
+            print(triage.work_queue())
 
             opt = "0"
 
         elif opt == "6":
-            print("Loading reports...")
+            print(print(triage.report()))
 
             opt = "0"
 
@@ -91,18 +104,3 @@ def triange_runner():
         print("Exiting...\n")
 
 triange_runner()
-
-# try:
-#     triage.create_ticket(
-#         "Title",
-#         "1",
-#         "2",
-#         '1'
-#     )
-# except InvalidAttributeError as err:
-#     print(f"Err: {err}")
-# else:
-#     print(triage.tickets)
-
-# triage.load()
-# print(triage.tickets)

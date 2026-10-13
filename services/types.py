@@ -25,4 +25,10 @@ class TicketDictType(TypedDict):
     urgency: str
     cases: int
     priority: str
-    assigned_staff: str | None
+    status: str
+    assigned_staff: str
+
+class TicketStatus(Enum):
+    OPEN = "open"
+    IN_PROGRESS = "in progress"
+    RESOLVED = "resolved"

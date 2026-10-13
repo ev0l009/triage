@@ -1,20 +1,12 @@
 {
-    "tkt-WpiQj": {
-        "id": "tkt-WpiQj",
-        "title": "Title",
-        "category": "Hardware",
-        "urgency": "medium",
-        "cases": 1,
-        "priority": "medium",
-        "assigned_staff": null
-    },
-    "tkt-3sKcU": {
-        "id": "tkt-3sKcU",
-        "title": "WIFI Down",
+    "tkt-jbJjB": {
+        "id": "tkt-jbJjB",
+        "title": "Laptop issues",
         "category": "Hardware",
         "urgency": "high",
-        "cases": 10,
+        "cases": 12,
         "priority": "critical",
-        "assigned_staff": null
+        "status": "in progress",
+        "assigned_staff": "Valerian"
     }
 }
