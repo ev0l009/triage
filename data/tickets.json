@@ -7,5 +7,14 @@
         "cases": 1,
         "priority": "medium",
         "assigned_staff": null
+    },
+    "tkt-3sKcU": {
+        "id": "tkt-3sKcU",
+        "title": "WIFI Down",
+        "category": "Hardware",
+        "urgency": "high",
+        "cases": 10,
+        "priority": "critical",
+        "assigned_staff": null
     }
 }

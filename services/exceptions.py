@@ -6,3 +6,6 @@ class InvalidAttributeError(TriageError):
 
 class DataBaseError(TriageError):
     pass
+
+class InvalidTicketIDError(TriageError):
+    pass
