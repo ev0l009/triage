@@ -1,13 +1,13 @@
-from services.ui import get_main_menu_opt
-
 from services.triage import Triage
+
+from services.utils import get_main_menu_opt
 
 def triage_runner():
     current_state = "main_menu"
 
     triage = Triage()
 
-    print("\nLoading tickets\n")
+    triage.load()
 
     while current_state != "exit":
 
@@ -19,29 +19,29 @@ def triage_runner():
             current_state = "main_menu"
 
         elif current_state == "view_ticket":
-            print("\nOpening ticket\n")
+            triage.view_ticket()
             current_state = "main_menu"
 
         elif current_state == "list_tickets":
-            print("\nDisplaying all tickets\n")
+            triage.list_tickets()
             current_state = "main_menu"
 
         elif current_state == "assign_ticket":
-            print("\nAssigning ticket\n")
+            triage.assign_ticket()
             current_state = "main_menu"
 
         elif current_state == "work_queue":
-            print("\nDisplaying work queue\n")
+            triage.show_work_queue()
             current_state = "main_menu"
 
         elif current_state == "reports":
-            print("\nDisplaying reports\n")
+            triage.show_report()
             current_state = "main_menu"
 
         else:
             print("\nInvalid selection. Try again\n")
     
-    print("\nSaving tickets\n")
+    triage.save()
 
     print("\nExiting\n")
 

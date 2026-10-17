@@ -8,5 +8,15 @@
         "priority": "critical",
         "status": "in progress",
         "assigned_staff": "Valerian"
+    },
+    "tkt-LLPO8": {
+        "id": "tkt-LLPO8",
+        "title": "Wifi Down",
+        "category": "Network",
+        "urgency": "medium",
+        "cases": 3,
+        "priority": "medium",
+        "status": "open",
+        "assigned_staff": "None"
     }
 }
