@@ -9,6 +9,8 @@ def require_non_empty(value: str, field_name: str):
         print(f"{field_name} cannot be empty")
         return
     
+    return value.strip()
+
 def get_category(opt: str) -> str:
 
     options: dict[str, str] = {
@@ -24,29 +26,40 @@ def get_category(opt: str) -> str:
     
     return options[opt]
 
-def get_urgency(opt: str) -> str:
-
+def get_urgency() -> str:
     options: dict[str, str] = {
         "1": Urgency.HIGH.value,
         "2": Urgency.MEDIUM.value,
         "3": Urgency.LOW.value,
     }
 
-    if opt not in options:
+    choice: str = (
+        "----- Select an urgency level -----\n"
+        "1. High\n"
+        "2. Medium\n"
+        "3. Low\n"
+        "___________________________________\n"
+        "Select an option: "
+    )
+
+    if choice not in options:
         print("Invalid Urgency option.")
         return
     
-    return options[opt]
+    return options[choice]
 
-def validate_cases(value: str) -> int:
+def get_validate_cases() -> int:
+
+    cases = input("Number of cases: ")
+
     try:
-        int_val = int(value)
+        int_val = int(cases)
     except ValueError:
         print("Number of cases must be an integer.")
         return
     
     if int_val <= 0:
-        print("Number of cases must be greater then zero.")
+        print("Number of cases must be greater than zero.")
         return
     
     return int_val

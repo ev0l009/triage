@@ -6,7 +6,7 @@ from services.types import TicketDictType
 from services.types import Priority, Urgency, TicketStatus
 
 from utils.validators import require_non_empty
-from utils.validators import validate_cases
+from utils.validators import get_validate_cases
 from utils.validators import get_category
 from utils.validators import get_urgency
 
@@ -29,25 +29,22 @@ class Triage:
     def __init__(self):
         self.tickets: dict[str, TicketDictType] = {}
 
-    def create_ticket(
-        self,
-        title: str,
-        category: str,
-        urgency: str,
-        cases: str
-    ) -> str:
+    def create_ticket(self) -> str:
         
         title = input("Ticket title: ")
 
-        require_non_empty(title, "Title")
-        validated_category = get_category(category)
-        validated_urgency = get_urgency(urgency)
-        validated_cases = validate_cases(cases)
+        validated_title = require_non_empty(title, "Title")
+        validated_category = get_category()
+        validated_urgency = get_urgency()
+        validated_cases = get_validate_cases()
 
         if (
-            require_non_empty is None or
-            validated_category is None
-        )
+            validated_title is None or
+            validated_category is None or
+            validated_urgency is None or
+            validated_cases is None
+        ):
+            return
 
         ticket_id = generate_id()
 
