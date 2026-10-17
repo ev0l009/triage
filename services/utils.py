@@ -3,8 +3,6 @@ import secrets
 
 from services.types import Categories, Urgency
 
-from services.exceptions import InvalidAttributeError
-
 from services.types import Categories, Urgency
 
 def generate_id() -> str:

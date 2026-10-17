@@ -12,8 +12,6 @@ from services.utils import get_urgency
 
 from services.utils import generate_id
 
-from services.exceptions import DataBaseError, InvalidTicketIDError
-
 DATA_DIR = Path(__file__).resolve().parent.parent/'data'
 FILE_PATH = DATA_DIR/"tickets.json"
 
