@@ -1,65 +1,62 @@
-# CampusFlow 🎓
+# 🎓 Triage
 
-CampusFlow is a ticket management system designed to help campuses manage, prioritize, assign, and track reported issues efficiently.
-
-## 👥 Project Team
-
-- **Developer 1:** [Emmanuel Enejo]
-- **Developer 2:** [Blessing Ogbuche]
+Triage is a ticket management system designed to help campuses manage, prioritize, assign, and track reported issues efficiently.
 
 ## 🎯 Project Goal
 
-The goal of CampusFlow is to provide a simple and organized way to manage campus-related issues, ensuring that important problems are prioritized and resolved efficiently.
+The goal of Triage is to provide a simple and organized way to manage campus-related issues, ensuring that important problems are prioritized and resolved efficiently.
 
 ## ✨ Features
 
-- **Ticket Management:** Create, view, and list tickets.
-- **Priority Calculation:** Automatically determine ticket priority based on urgency and the number of affected users.
-- **Ticket Assignment:** Assign tickets to staff members.
-- **Work Queue:** Display open tickets in priority order.
-- **Workflow Management:** Track tickets through their lifecycle: Open → In Progress → Resolved.
-- **Ticket Reports:** Generate summaries showing total tickets, status breakdowns, and priority breakdowns.
-- **Data Persistence:** Save and load ticket data using JSON.
+- 🎫 **Ticket Management:** Create, view, and list tickets.
+- 🚦 **Priority Calculation:** Automatically determine ticket priority based on urgency and the number of affected users.
+- 👥 **Ticket Assignment:** Assign tickets to staff members.
+- 📋 **Work Queue:** Display open tickets in priority order.
+- 🔄 **Workflow Management:** Track tickets through their lifecycle: `Open → In Progress → Resolved`.
+- 📊 **Ticket Reports:** Generate summaries showing the total number of tickets, status breakdowns, and priority breakdowns.
+- 💾 **Data Persistence:** Save and load ticket data using JSON.
 
 ## 🛠️ Technologies
 
-- Python
-- JSON
-- Git & GitHub
+- 🐍 Python
+- 📄 JSON
+- 🌿 Git & GitHub
 
 ## 🚀 Getting Started
 
-1. Clone the repository:
+### 1. Clone the Repository
 
-   ```bash
-   git clone <https://github.com/ev0l009/campus_flow_team_speedy_turtle.git>
-   ```
+```bash
+git clone https://github.com/ev0l009/triage.git
+```
 
-2. Navigate into the project directory:
+### 2. Navigate to the Project Directory
 
-   ```bash
-   cd <campus_flow_team_speedy_turtle>
-   ```
+```bash
+cd triage
+```
 
-3. Run the application using its entry-point script.
+### 3. Run the Application
 
-   ```bash
-   python3 main.py
-   ```
+Start the application using its entry-point script:
 
+```bash
+python3 main.py
+```
 
-## 🤝 Collaboration
+## 🔮 Future Implementations
 
-This project is developed collaboratively using Git and GitHub.
+The following features are planned for future versions of Triage.
 
-Each developer can work on a separate branch, test their changes, and submit changes for integration into the main branch.
+### 🔐 Authentication and Access Control
 
-FUTURE IMPLEMENTATIONS:
-- Auth for staff and fellows
-- Only staff can create and update tickets
-- Fellows can only view tickets, list tickets, view work queue
+- Implement authentication for staff and fellows.
+- Restrict ticket creation and updates to staff members.
+- Allow fellows to view tickets, list tickets, and access the work queue.
 
-Extras:
-- Fellows can log complaints
-- Staff can correlate logged complaints into tickets
-- Staff can leave comments
+### 💡 Additional Features
+
+- 📝 **Complaint Logging:** Allow fellows to log complaints about campus-related issues.
+- 🔗 **Complaint Correlation:** Allow staff to review logged complaints and correlate them into tickets.
+- 💬 **Ticket Comments:** Enable staff to leave comments on tickets.
+```

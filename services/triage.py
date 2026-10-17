@@ -1,3 +1,6 @@
+"""Core engine that handles all triage actions"""
+
+# To perform save and load actions
 import json
 from pathlib import Path
 
@@ -12,9 +15,11 @@ from services.utils import get_urgency
 
 from services.utils import generate_id
 
+# File path and directory
 DATA_DIR = Path(__file__).resolve().parent.parent/'data'
 FILE_PATH = DATA_DIR/"tickets.json"
 
+# To sort tickets by priority
 PRIORITY_SORT_ORDER: dict[str, int] = {
     Priority.CRITICAL.value: 1,
     Priority.HIGH.value: 2,
@@ -23,12 +28,17 @@ PRIORITY_SORT_ORDER: dict[str, int] = {
 }
 
 class Triage:
-    
+    """Initializes a triage object and performs triage actions"""
+
     def __init__(self):
         self.tickets: dict[str, TicketDictType] = {}
 
-    def create_ticket(self) -> str:
+    def create_ticket(self) -> dict[str, TicketDictType] | None:
+        """Validates user input and creates a ticket.
         
+        Returns:
+            - self.tickets `dict` - updated tickets list
+            - `None` - when an error occurs"""
         title = input("\nTicket title: ")
 
         validated_title = require_non_empty(title, "Title")
@@ -74,6 +84,10 @@ class Triage:
         return self.tickets
     
     def set_priority(self, cases: int, urgency: str) -> str:
+        """Sets ticket priority based on number of cases and urgency.
+        
+        Returns:
+            `str` - priority value"""
         if urgency == Urgency.HIGH.value and cases >= 10:
             return Priority.CRITICAL.value
         elif urgency == Urgency.HIGH.value or cases >= 10:
@@ -83,8 +97,8 @@ class Triage:
         else:
             return Priority.LOW.value
         
-    def list_tickets(self) -> str:
-
+    def list_tickets(self) -> str | None:
+        """Displays all available tickets."""
         if not self.tickets:
             return "\nThere are no tickets available. Please create one.\n"
         
@@ -99,7 +113,11 @@ class Triage:
         
         print(ticket_list_str)
     
-    def view_ticket(self) -> str:
+    def view_ticket(self) -> str | None:
+        """Displays details of a particular ticket
+        
+        Return
+            - `None` - when tickket value is invalid"""
         ticket_id = input("\nEnter Ticket ID: ")
 
         ticket_id = require_non_empty(ticket_id, "Ticket ID")
@@ -124,6 +142,10 @@ class Triage:
         )
 
     def assign_ticket(self):
+        """Assigns a ticet to a staff identifier.
+        
+        Return
+            - `None` - for invalid ids"""
         ticket_id = input(f"\nEnter a valid Ticket ID: ")
 
         ticket_id = require_non_empty(ticket_id, "Ticket ID")
@@ -149,12 +171,8 @@ class Triage:
 
         return f"Ticket with ID {ticket_id} successfully assigned to {staff_name}."
     
-    def set_tickets_status(self):
-        for ticket in self.tickets.values():
-            self.set_ticket_status(ticket)
-    
     def set_ticket_status(self, ticket: TicketDictType):
-
+        """Updates ticket status"""
         if not ticket["assigned_staff"].strip():
             ticket["status"] = TicketStatus.OPEN.value
         elif ticket["assigned_staff"]:
@@ -162,8 +180,11 @@ class Triage:
         else:
             ticket["status"] = TicketStatus.RESOLVED.value
 
-    def show_work_queue(self) -> str:
-
+    def show_work_queue(self) -> str | None:
+        """Displays the work queue
+        
+        Return
+            - `None` - when no tickets a re available."""
         if not self.tickets:
             print("\nThere are no tickets available. Please create one.\n")
             return
@@ -185,8 +206,8 @@ class Triage:
 
         print(sorted_ticket_list)
     
-    def show_report(self) -> str:
-
+    def show_report(self):
+        """Shows summarized reports of tickets"""
         report = (
             "\n------ Report ------\n"
             "No of tickets: \n"
@@ -198,7 +219,7 @@ class Triage:
         print(report)
 
     def save(self):
-
+        """Saves current session to json"""
         try:
             with open(FILE_PATH, 'w') as file:
                 json.dump(self.tickets, file, indent=4)
@@ -208,7 +229,7 @@ class Triage:
             print(f"\nYour session has been saved.\n")
         
     def load(self):
-
+        """Loads previous session from json"""
         DATA_DIR.mkdir(exist_ok=True, parents=True)
 
         try:

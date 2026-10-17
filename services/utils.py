@@ -1,17 +1,28 @@
+"""Handles ticket id generation, menus and validation"""
+
+# required for randomly generating ids
 import string
 import secrets
 
+# valid categories and urgency values
 from services.types import Categories, Urgency
 
-from services.types import Categories, Urgency
 
 def generate_id() -> str:
+    """Generates a random id with a constant preffix
+    
+    Returns:
+        - `str` - random id with constant preffix"""
     character_pool = string.ascii_letters + string.digits
     preffix = "tkt"
     suffix = "".join(secrets.choice(character_pool) for _ in range(5))
     return f"{preffix}-{suffix}"
 
 def get_main_menu_opt() -> str:
+    """Displays the main menu, validates user input and redirects to the next point in the app.
+    
+    Return
+        - `str` - next state in the app"""
     options: dict[str, str] = {
         "1": "create_ticket",
         "2": "view_ticket",
@@ -42,13 +53,23 @@ def get_main_menu_opt() -> str:
     return options[choice]
 
 def require_non_empty(value: str, field_name: str):
+    """Checks that a value is not empty and returns a stripped value.
+    
+    Args
+        - value `str` - value to be checked
+        - field_name `str` - name of field for error messsage."""
     if not value.strip():
         print(f"\n{field_name} cannot be empty. Try again\n")
         return
     
     return value.strip()
 
-def get_category() -> str:
+def get_category() -> str | None:
+    """Displays the categories menu and validates user input.
+    
+    Returns
+        - `str` - selected category
+        - `None` - early return when an invalid option is entered."""
     options: dict[str, str] = {
         "1": Categories.HARDWARE.value,
         "2": Categories.SOFTWARE.value,
@@ -72,7 +93,12 @@ def get_category() -> str:
     
     return options[choice]
 
-def get_urgency() -> str:
+def get_urgency() -> str | None:
+    """Displays the urgency menu and validates user input.
+    
+    Returns
+        - `str` - selected urgency
+        - `None` - early return when an invalid option is entered."""
     options: dict[str, str] = {
         "1": Urgency.HIGH.value,
         "2": Urgency.MEDIUM.value,
@@ -94,7 +120,12 @@ def get_urgency() -> str:
     
     return options[choice]
 
-def get_validate_cases() -> int:
+def get_validate_cases() -> int | None:
+    """Validates user input for number of cases.
+    
+    Returns
+        - `int` - number of cases
+        - `None` - early return when an invalid case value is entered."""
 
     cases = input("Number of cases: ")
 
