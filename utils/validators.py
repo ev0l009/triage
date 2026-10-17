@@ -6,8 +6,9 @@ from services.types import Categories, Urgency
 
 def require_non_empty(value: str, field_name: str):
     if not value.strip():
-        raise InvalidAttributeError(f"{field_name} cannot be empty")
-
+        print(f"{field_name} cannot be empty")
+        return
+    
 def get_category(opt: str) -> str:
 
     options: dict[str, str] = {
@@ -18,7 +19,8 @@ def get_category(opt: str) -> str:
     }
 
     if opt not in options:
-        raise InvalidAttributeError("Invalid Category option.")
+        print("Invalid Category option.")
+        return
     
     return options[opt]
 
@@ -31,7 +33,8 @@ def get_urgency(opt: str) -> str:
     }
 
     if opt not in options:
-        raise InvalidAttributeError("Invalid Urgency option.")
+        print("Invalid Urgency option.")
+        return
     
     return options[opt]
 
@@ -39,9 +42,11 @@ def validate_cases(value: str) -> int:
     try:
         int_val = int(value)
     except ValueError:
-        raise InvalidAttributeError("Number of cases must be an integer.")
+        print("Number of cases must be an integer.")
+        return
     
     if int_val <= 0:
-        raise InvalidAttributeError("Number of cases must be greater then zero.")
+        print("Number of cases must be greater then zero.")
+        return
     
     return int_val

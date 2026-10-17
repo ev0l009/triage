@@ -1,106 +1,48 @@
-from services.exceptions import InvalidAttributeError, InvalidTicketIDError
+from services.ui import get_main_menu_opt
 
 from services.triage import Triage
 
-from services.ui import main_menu
+def triage_runner():
+    current_state = "main_menu"
 
-from services.ui import categories_menu, urgency_menu
+    triage = Triage()
 
-triage = Triage()
+    print("\nLoading tickets\n")
 
-def triange_runner():
-    try:
-        triage.load()
-    except:
-        raise
+    while current_state != "exit":
 
-    opt = "0"
+        if current_state == "main_menu":
+            current_state = get_main_menu_opt()
 
-    while opt != "7":
-        
-        if opt == "0":
-            opt = input(main_menu)
+        elif current_state == "create_ticket":
+            triage.create_ticket()
+            current_state = "main_menu"
 
-        elif opt == "1":
+        elif current_state == "view_ticket":
+            print("\nOpening ticket\n")
+            current_state = "main_menu"
 
-            title = input("Ticket title: ")
-            category = input(categories_menu)
-            urgency = input(urgency_menu)
-            cases = input("Number of cases: ")
+        elif current_state == "list_tickets":
+            print("\nDisplaying all tickets\n")
+            current_state = "main_menu"
 
-            try:
-                ticket_id = triage.create_ticket(
-                    title, 
-                    category, 
-                    urgency, 
-                    cases
-                )
-            except InvalidAttributeError as err:
-                print(err)
-            else:
-                print(f"Ticket with ID: {ticket_id} successfully created.")
+        elif current_state == "assign_ticket":
+            print("\nAssigning ticket\n")
+            current_state = "main_menu"
 
-            opt = "0"
+        elif current_state == "work_queue":
+            print("\nDisplaying work queue\n")
+            current_state = "main_menu"
 
-        elif opt == "2":
-            print(triage.list_tickets())
+        elif current_state == "reports":
+            print("\nDisplaying reports\n")
+            current_state = "main_menu"
 
-            opt = "0"
+        else:
+            print("\nInvalid selection. Try again\n")
+    
+    print("\nSaving tickets\n")
 
-        elif opt == "3":
-            try:
-                ticket_details = triage.view_ticket(
-                    input("Enter a valid ticket ID: ")
-                )
-            except InvalidAttributeError as err:
-                print(err)
-            except InvalidTicketIDError as err:
-                print(err)
-            else:
-                print(ticket_details)
+    print("\nExiting\n")
 
-            opt = "0"
-
-        elif opt == "4":
-            ticket_id = input("Enter a valid ticket ID: ")
-            staff_name = input("Enter staff name: ")
-
-            try:
-                message = triage.assign_ticket(
-                    ticket_id,
-                    staff_name
-                )
-            except InvalidTicketIDError as err:
-                print(err)
-            except InvalidAttributeError as err:
-                print(err)
-            else:
-                print(message)
-
-            opt = "0"
-
-        elif opt == "5":
-            print(triage.work_queue())
-
-            opt = "0"
-
-        elif opt == "6":
-            print(print(triage.report()))
-
-            opt = "0"
-
-        elif opt not in ["1","2","3","4","5","6","7"]:
-            print("Invalid option. Try again...")
-
-            opt = "0"
-
-    try:
-        triage.save()
-    except:
-        raise
-    else:
-        print("Session saved.\n")
-    finally:
-        print("Exiting...\n")
-
-triange_runner()
+triage_runner()

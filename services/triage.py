@@ -36,11 +36,18 @@ class Triage:
         urgency: str,
         cases: str
     ) -> str:
+        
+        title = input("Ticket title: ")
 
         require_non_empty(title, "Title")
         validated_category = get_category(category)
         validated_urgency = get_urgency(urgency)
         validated_cases = validate_cases(cases)
+
+        if (
+            require_non_empty is None or
+            validated_category is None
+        )
 
         ticket_id = generate_id()
 
