@@ -172,7 +172,9 @@ class Triage:
 
         ticket_list: list[TicketDictType] = list(self.tickets.values())
 
-        ticket_list.sort(key=lambda ticket: PRIORITY_SORT_ORDER.get(ticket["priority"], 99))
+        ticket_list.sort(
+            key=lambda ticket: PRIORITY_SORT_ORDER.get(ticket["priority"], 99)
+        )
 
         sorted_ticket_list = (
             "\n------ Work Queue ------\n"
@@ -186,6 +188,7 @@ class Triage:
         print(sorted_ticket_list)
     
     def show_report(self) -> str:
+
         report = (
             "\n------ Report ------\n"
             "No of tickets: \n"
@@ -196,8 +199,8 @@ class Triage:
 
         print(report)
 
-
     def save(self):
+
         try:
             with open(FILE_PATH, 'w') as file:
                 json.dump(self.tickets, file, indent=4)
@@ -207,7 +210,9 @@ class Triage:
             print(f"\nYour session has been saved.\n")
         
     def load(self):
+
         DATA_DIR.mkdir(exist_ok=True, parents=True)
+
         try:
             with open(FILE_PATH, 'r') as file:
                 raw_data = json.load(file)
